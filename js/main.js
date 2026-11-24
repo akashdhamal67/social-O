@@ -129,7 +129,7 @@ function init3DHeroCanvas() {
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, isTouchDevice() ? 1.5 : 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.0;
+  renderer.toneMappingExposure = 1.2;
   container.appendChild(renderer.domElement);
 
   // Group for the 3D entity - centered horizontally in hero behind headline
@@ -137,13 +137,13 @@ function init3DHeroCanvas() {
   const updatePosition = () => {
     if (window.innerWidth <= 600) {
       mainGroup.position.set(0, 0.2, -4);
-      mainGroup.scale.set(0.48, 0.48, 0.48);
+      mainGroup.scale.set(0.58, 0.58, 0.58);
     } else if (window.innerWidth <= 768) {
       mainGroup.position.set(0, 0.3, -3);
-      mainGroup.scale.set(0.65, 0.65, 0.65);
+      mainGroup.scale.set(0.7, 0.7, 0.7);
     } else if (window.innerWidth <= 1200) {
       mainGroup.position.set(0, 0.5, 0);
-      mainGroup.scale.set(0.88, 0.88, 0.88);
+      mainGroup.scale.set(0.9, 0.9, 0.9);
     } else {
       mainGroup.position.set(0, 0.5, 0);
       mainGroup.scale.set(1.0, 1.0, 1.0);
@@ -158,17 +158,15 @@ function init3DHeroCanvas() {
   const knotRadial = isTouchDevice() ? 24 : 48;
   const knotGeo = new THREE.TorusKnotGeometry(6.2, 1.8, knotSegments, knotRadial, 2, 5);
 
-  // Exact saturated vibrant lime green matching the "ONLINE." text gradient (#DFF76F to #E8FF80)
-  // Fully opaque (opacity: 1, transparent: false) with self-lit emissive lime so it stays vividly saturated even in shade
+  // Deep, dark forest green base body (#1B3A08 / 0x14330b), fully opaque with rich metallic gloss
   const knotMat = new THREE.MeshPhysicalMaterial({
-    color: 0xdff76f,
-    emissive: 0xb2db26,
-    emissiveIntensity: 0.42,
-    roughness: 0.22,
-    metalness: 0.18,
-    clearcoat: 0.95,
-    clearcoatRoughness: 0.1,
-    reflectivity: 0.85,
+    color: 0x14330b,
+    emissive: 0x091c05,
+    roughness: 0.32,
+    metalness: 0.75,
+    clearcoat: 0.75,
+    clearcoatRoughness: 0.2,
+    reflectivity: 0.7,
     transparent: false,
     opacity: 1.0,
     wireframe: false
@@ -177,13 +175,13 @@ function init3DHeroCanvas() {
   const mesh = new THREE.Mesh(knotGeo, knotMat);
   mainGroup.add(mesh);
 
-  // Subtle darker lime wireframe outer mesh lines (#8cb81a) at low opacity (12%) for crisp 3D structure
+  // Delicate wireframe outer aura in lime green (clean 18% opacity)
   const wireGeo = new THREE.TorusKnotGeometry(6.28, 1.84, isTouchDevice() ? 50 : 90, 24, 2, 5);
   const wireMat = new THREE.MeshBasicMaterial({
-    color: 0x8cb81a,
+    color: 0xd4f354,
     wireframe: true,
     transparent: true,
-    opacity: 0.12
+    opacity: 0.18
   });
   const wireMesh = new THREE.Mesh(wireGeo, wireMat);
   mainGroup.add(wireMesh);
@@ -201,7 +199,7 @@ function init3DHeroCanvas() {
     }
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
     const particleMat = new THREE.PointsMaterial({
-      color: 0xdff76f,
+      color: 0xd4f354,
       size: 0.12,
       transparent: true,
       opacity: 0.35,
@@ -211,24 +209,24 @@ function init3DHeroCanvas() {
     scene.add(particles);
   }
 
-  // Pure white ambient lighting for accurate, un-tinted colour reproduction
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.70);
+  // Ambient & Rim Lighting (lime green & dark green tones, zero blue)
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
   scene.add(ambientLight);
 
-  // Key light: pale lime specular glints (#f7ffe0) for glossy highlights
-  const keySpecularLight = new THREE.PointLight(0xf7ffe0, 2.0, 48);
-  keySpecularLight.position.set(12, 10, 8);
-  scene.add(keySpecularLight);
+  // Key light: bright lime specular glints and highlights (#D4F354)
+  const keyLimeLight = new THREE.PointLight(0xd4f354, 2.4, 45);
+  keyLimeLight.position.set(12, 10, 8);
+  scene.add(keyLimeLight);
 
-  // Saturated lime fill light (#b5dd2e) from opposite side for rich 3D contouring without dull shadows
-  const shadeFillLight = new THREE.PointLight(0xb5dd2e, 2.4, 50);
-  shadeFillLight.position.set(-14, -8, 12);
-  scene.add(shadeFillLight);
+  // Rim light: emerald / dark lime fill from opposite side
+  const rimLight = new THREE.PointLight(0x448811, 2.2, 50);
+  rimLight.position.set(-14, -8, 12);
+  scene.add(rimLight);
 
-  // Top rim light: vibrant lime (#e8ff80) for upper ridge illumination
-  const topRimLight = new THREE.PointLight(0xe8ff80, 1.8, 38);
-  topRimLight.position.set(0, 16, -4);
-  scene.add(topRimLight);
+  // Top accent light: soft light lime glow
+  const topGlowLight = new THREE.PointLight(0xbfe03c, 1.2, 30);
+  topGlowLight.position.set(0, 15, -5);
+  scene.add(topGlowLight);
 
   // Mouse Interaction parallax
   let targetRotX = 0;
