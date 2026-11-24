@@ -129,7 +129,7 @@ function init3DHeroCanvas() {
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, isTouchDevice() ? 1.5 : 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.2;
+  renderer.toneMappingExposure = 1.0;
   container.appendChild(renderer.domElement);
 
   // Group for the 3D entity - centered horizontally in hero behind headline
@@ -158,32 +158,32 @@ function init3DHeroCanvas() {
   const knotRadial = isTouchDevice() ? 24 : 48;
   const knotGeo = new THREE.TorusKnotGeometry(6.2, 1.8, knotSegments, knotRadial, 2, 5);
 
-  // Bright vibrant lime green body matching the "ONLINE." headline text gradient (#D4F354 -> #E6FF7A)
-  // Transparent opacity (0.65) ensures white text stays clearly readable when overlapping
+  // Exact saturated vibrant lime green matching the "ONLINE." text gradient (#DFF76F to #E8FF80)
+  // Fully opaque (opacity: 1, transparent: false) with self-lit emissive lime so it stays vividly saturated even in shade
   const knotMat = new THREE.MeshPhysicalMaterial({
-    color: 0xd4f354,
-    emissive: 0x8ea822,
-    emissiveIntensity: 0.25,
-    roughness: 0.28,
-    metalness: 0.25,
+    color: 0xdff76f,
+    emissive: 0xb2db26,
+    emissiveIntensity: 0.42,
+    roughness: 0.22,
+    metalness: 0.18,
     clearcoat: 0.95,
-    clearcoatRoughness: 0.15,
+    clearcoatRoughness: 0.1,
     reflectivity: 0.85,
-    transparent: true,
-    opacity: 0.68,
+    transparent: false,
+    opacity: 1.0,
     wireframe: false
   });
 
   const mesh = new THREE.Mesh(knotGeo, knotMat);
   mainGroup.add(mesh);
 
-  // Subtle darker-green wireframe outer mesh lines at low opacity (14%) for structure without clutter
+  // Subtle darker lime wireframe outer mesh lines (#8cb81a) at low opacity (12%) for crisp 3D structure
   const wireGeo = new THREE.TorusKnotGeometry(6.28, 1.84, isTouchDevice() ? 50 : 90, 24, 2, 5);
   const wireMat = new THREE.MeshBasicMaterial({
-    color: 0x4a7012,
+    color: 0x8cb81a,
     wireframe: true,
     transparent: true,
-    opacity: 0.14
+    opacity: 0.12
   });
   const wireMesh = new THREE.Mesh(wireGeo, wireMat);
   mainGroup.add(wireMesh);
@@ -201,32 +201,32 @@ function init3DHeroCanvas() {
     }
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
     const particleMat = new THREE.PointsMaterial({
-      color: 0xd4f354,
+      color: 0xdff76f,
       size: 0.12,
       transparent: true,
-      opacity: 0.28,
+      opacity: 0.35,
       blending: THREE.AdditiveBlending
     });
     particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
   }
 
-  // Balanced ambient light to illuminate the lime sculpture cleanly
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+  // Pure white ambient lighting for accurate, un-tinted colour reproduction
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.70);
   scene.add(ambientLight);
 
-  // Key light: near-white lime specular highlights and glints (#F4FFC2)
-  const keySpecularLight = new THREE.PointLight(0xf4ffc2, 2.5, 48);
+  // Key light: pale lime specular glints (#f7ffe0) for glossy highlights
+  const keySpecularLight = new THREE.PointLight(0xf7ffe0, 2.0, 48);
   keySpecularLight.position.set(12, 10, 8);
   scene.add(keySpecularLight);
 
-  // Shading fill: slightly deeper lime tone (#A8CC2A) from the opposite side for rich 3D contouring
-  const shadeFillLight = new THREE.PointLight(0xa8cc2a, 2.0, 50);
+  // Saturated lime fill light (#b5dd2e) from opposite side for rich 3D contouring without dull shadows
+  const shadeFillLight = new THREE.PointLight(0xb5dd2e, 2.4, 50);
   shadeFillLight.position.set(-14, -8, 12);
   scene.add(shadeFillLight);
 
-  // Top rim light: light lime (#E6FF7A) for top crest illumination
-  const topRimLight = new THREE.PointLight(0xe6ff7a, 1.4, 35);
+  // Top rim light: vibrant lime (#e8ff80) for upper ridge illumination
+  const topRimLight = new THREE.PointLight(0xe8ff80, 1.8, 38);
   topRimLight.position.set(0, 16, -4);
   scene.add(topRimLight);
 
