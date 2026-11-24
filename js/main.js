@@ -99,7 +99,7 @@ function initCustomCursor() {
       cursor.style.height = '24px';
       follower.style.width = '64px';
       follower.style.height = '64px';
-      follower.style.borderColor = 'rgba(255, 85, 0, 0.6)';
+      follower.style.borderColor = 'rgba(212, 243, 84, 0.6)';
     });
     el.addEventListener('mouseleave', () => {
       cursor.style.width = '12px';
@@ -113,7 +113,7 @@ function initCustomCursor() {
 
 /* --------------------------------------------------------------------------
    3. ABSTRACT 3D KINETIC TORUS KNOT / TWIST ENGINE (THREE.JS)
-   Inspired by Pony's intertwined organic form, with electric blue & orange radiance
+   Inspired by Pony's intertwined organic form, with electric blue & lime radiance
    -------------------------------------------------------------------------- */
 function init3DHeroCanvas() {
   const container = document.getElementById('hero-canvas-container');
@@ -176,7 +176,7 @@ function init3DHeroCanvas() {
   // Delicate wireframe outer aura (subtler opacity)
   const wireGeo = new THREE.TorusKnotGeometry(6.28, 1.84, isTouchDevice() ? 50 : 90, 24, 2, 5);
   const wireMat = new THREE.MeshBasicMaterial({
-    color: 0xff5500,
+    color: 0xd4f354,
     wireframe: true,
     transparent: true,
     opacity: 0.10
@@ -211,9 +211,9 @@ function init3DHeroCanvas() {
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
   scene.add(ambientLight);
 
-  const orangeLight = new THREE.PointLight(0xff5500, 2.2, 45);
-  orangeLight.position.set(12, 10, 8);
-  scene.add(orangeLight);
+  const limeLight = new THREE.PointLight(0xd4f354, 2.2, 45);
+  limeLight.position.set(12, 10, 8);
+  scene.add(limeLight);
 
   const blueLight = new THREE.PointLight(0x0055dd, 2.8, 50);
   blueLight.position.set(-14, -8, 12);
