@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title id="service-page-title">Service Details – Socialo Agency Dubai</title>
   <meta name="description" id="service-page-desc" content="Detailed service breakdown, methodology, and ROI deliverables by Socialo Dubai.">
   <link rel="canonical" href="https://socialo.ae/service-detail.html">
@@ -42,6 +42,34 @@
     </div>
   </header>
 
+    <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+    <div class="mobile-drawer-inner">
+      <div class="mobile-drawer-header">
+        <span class="brand-logo">
+          <img src="images/socialo-logo.webp" alt="Socialo Logo" width="110" height="32">
+        </span>
+        <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close navigation menu">&times;</button>
+      </div>
+      <ul class="mobile-nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html" class="">Agency</a></li>
+        <li><a href="services.html" class="">Services</a></li>
+        <li><a href="work.html" class="">Work</a></li>
+        <li><a href="contact.html" class="">Contact</a></li>
+      </ul>
+      <div class="mobile-drawer-footer">
+        <a href="contact.html" class="btn-pill btn-accent" style="width:100%; justify-content:center; margin-bottom:1.5rem;">
+          <span>Let's Talk</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <p style="font-size:0.75rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; font-family:var(--font-mono);">DUBAI HQ</p>
+        <p style="color:#fff; font-size:0.92rem; font-weight:600;">10th Floor Iris Bay, Business Bay</p>
+        <p style="margin-top:0.4rem;"><a href="mailto:connect@socialo.ae" style="color:var(--accent-orange); font-size:0.92rem;">connect@socialo.ae</a></p>
+      </div>
+    </div>
+  </div>
+
   <main>
     <section class="section-py" style="padding-top: 12rem;">
       <div class="container">
@@ -59,7 +87,7 @@
         </div>
 
         <!-- Service Main Content Layout -->
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; margin-top: 4rem;">
+        <div class="detail-layout-grid">
           <div class="reveal-fade-up" id="srv-body">
             <h2 style="font-size: 2.2rem; margin-bottom: 1.5rem;" id="srv-subheading">Comprehensive Strategic Execution</h2>
             <div id="srv-paragraphs" style="display: flex; flex-direction: column; gap: 1.5rem; font-size: 1.1rem;">
@@ -69,7 +97,7 @@
 
             <div style="margin-top: 3.5rem;">
               <h3 style="font-size: 1.6rem; margin-bottom: 1.5rem;">What's Included in This Service</h3>
-              <div class="bento-grid" style="grid-template-columns: 1fr 1fr;" id="srv-features">
+              <div class="bento-grid two-col-bento" id="srv-features">
                 <div class="bento-card">
                   <h4>Technical SEO & Core Web Vitals</h4>
                   <p>In-depth crawl analysis, JavaScript rendering optimization, schema graph implementation, and mobile speed enhancement.</p>

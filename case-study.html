@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title id="cs-page-title">Case Study Details – Socialo Agency Dubai</title>
   <meta name="description" id="cs-page-desc" content="In-depth breakdown of strategy, execution, and outcomes delivered by Socialo Dubai.">
   <link rel="canonical" href="https://socialo.ae/case-study.html">
@@ -42,6 +42,34 @@
     </div>
   </header>
 
+    <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+    <div class="mobile-drawer-inner">
+      <div class="mobile-drawer-header">
+        <span class="brand-logo">
+          <img src="images/socialo-logo.webp" alt="Socialo Logo" width="110" height="32">
+        </span>
+        <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close navigation menu">&times;</button>
+      </div>
+      <ul class="mobile-nav-links">
+        <li><a href="index.html" class="">Home</a></li>
+        <li><a href="about.html" class="">Agency</a></li>
+        <li><a href="services.html" class="">Services</a></li>
+        <li><a href="work.html" class="active">Work</a></li>
+        <li><a href="contact.html" class="">Contact</a></li>
+      </ul>
+      <div class="mobile-drawer-footer">
+        <a href="contact.html" class="btn-pill btn-accent" style="width:100%; justify-content:center; margin-bottom:1.5rem;">
+          <span>Let's Talk</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <p style="font-size:0.75rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.35rem; font-family:var(--font-mono);">DUBAI HQ</p>
+        <p style="color:#fff; font-size:0.92rem; font-weight:600;">10th Floor Iris Bay, Business Bay</p>
+        <p style="margin-top:0.4rem;"><a href="mailto:connect@socialo.ae" style="color:var(--accent-orange); font-size:0.92rem;">connect@socialo.ae</a></p>
+      </div>
+    </div>
+  </div>
+
   <main>
     <section class="section-py" style="padding-top: 12rem;">
       <div class="container">
@@ -59,11 +87,11 @@
           </p>
         </div>
 
-        <div style="margin: 4rem 0;" class="reveal-fade-up">
-          <img id="cs-hero-img" src="images/work/big-thumb.webp" alt="Case Study Visual" style="width: 100%; height: 500px; object-fit: cover; border-radius: 24px; border: 1px solid var(--border-subtle);">
+        <div style="margin: 4rem 0;" class="page-banner-wrap reveal-fade-up">
+          <img id="cs-hero-img" src="images/work/damac-case.webp" alt="Case Study Visual" class="page-banner-img" width="1280" height="720">
         </div>
 
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 4rem;">
+        <div class="detail-layout-grid">
           <div class="reveal-fade-up">
             <h2 style="font-size: 2.2rem; margin-bottom: 1.5rem;">The Challenge & Objectives</h2>
             <div id="cs-body-content" style="display: flex; flex-direction: column; gap: 1.5rem; font-size: 1.1rem;">
@@ -73,7 +101,7 @@
 
             <div style="margin-top: 4rem;">
               <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem;">Campaign Highlights & Execution</h3>
-              <div class="bento-grid" style="grid-template-columns: 1fr 1fr;" id="cs-highlights">
+              <div class="bento-grid two-col-bento" id="cs-highlights">
                 <div class="bento-card">
                   <h4>Targeted Audience Precision</h4>
                   <p>Engaging high-net-worth individuals interested in luxury Dubai real estate through segmented creative channels.</p>

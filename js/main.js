@@ -123,9 +123,11 @@ function init3DHeroCanvas() {
   const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
   camera.position.z = 24;
 
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
+  const isTouchDevice = () => window.matchMedia('(hover: none) and (pointer: coarse)').matches || window.innerWidth < 768;
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !isTouchDevice(), powerPreference: 'high-performance' });
   renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isTouchDevice() ? 1.5 : 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.2;
   container.appendChild(renderer.domElement);
@@ -133,9 +135,12 @@ function init3DHeroCanvas() {
   // Group for the 3D entity - centered horizontally in hero behind headline
   const mainGroup = new THREE.Group();
   const updatePosition = () => {
-    if (window.innerWidth <= 768) {
-      mainGroup.position.set(0, 0, -2);
-      mainGroup.scale.set(0.75, 0.75, 0.75);
+    if (window.innerWidth <= 600) {
+      mainGroup.position.set(0, 0.2, -4);
+      mainGroup.scale.set(0.58, 0.58, 0.58);
+    } else if (window.innerWidth <= 768) {
+      mainGroup.position.set(0, 0.3, -3);
+      mainGroup.scale.set(0.7, 0.7, 0.7);
     } else if (window.innerWidth <= 1200) {
       mainGroup.position.set(0, 0.5, 0);
       mainGroup.scale.set(0.9, 0.9, 0.9);
@@ -148,7 +153,10 @@ function init3DHeroCanvas() {
   scene.add(mainGroup);
 
   // Create an organic intertwined kinetic sculpture (Torus Knot with rich physical materials)
-  const knotGeo = new THREE.TorusKnotGeometry(6.2, 1.8, 180, 48, 2, 5);
+  // Low-poly on touch devices for mobile battery & GPU performance
+  const knotSegments = isTouchDevice() ? 90 : 180;
+  const knotRadial = isTouchDevice() ? 24 : 48;
+  const knotGeo = new THREE.TorusKnotGeometry(6.2, 1.8, knotSegments, knotRadial, 2, 5);
 
   // Softened, elegant deep cobalt/navy tone with subtle rim luster (reduced brightness & saturation)
   const knotMat = new THREE.MeshPhysicalMaterial({
@@ -166,7 +174,7 @@ function init3DHeroCanvas() {
   mainGroup.add(mesh);
 
   // Delicate wireframe outer aura (subtler opacity)
-  const wireGeo = new THREE.TorusKnotGeometry(6.28, 1.84, 90, 24, 2, 5);
+  const wireGeo = new THREE.TorusKnotGeometry(6.28, 1.84, isTouchDevice() ? 50 : 90, 24, 2, 5);
   const wireMat = new THREE.MeshBasicMaterial({
     color: 0xff5500,
     wireframe: true,
@@ -176,25 +184,28 @@ function init3DHeroCanvas() {
   const wireMesh = new THREE.Mesh(wireGeo, wireMat);
   mainGroup.add(wireMesh);
 
-  // Subtler Floating Ambient Particles (reduced from 120 to 35 with low opacity)
-  const particleCount = 35;
-  const particleGeo = new THREE.BufferGeometry();
-  const particlePos = new Float32Array(particleCount * 3);
-  for (let i = 0; i < particleCount * 3; i += 3) {
-    particlePos[i] = (Math.random() - 0.5) * 35;
-    particlePos[i + 1] = (Math.random() - 0.5) * 35;
-    particlePos[i + 2] = (Math.random() - 0.5) * 20;
+  // Subtler Floating Ambient Particles - hidden on touch devices
+  let particles = null;
+  if (!isTouchDevice()) {
+    const particleCount = 35;
+    const particleGeo = new THREE.BufferGeometry();
+    const particlePos = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      particlePos[i] = (Math.random() - 0.5) * 35;
+      particlePos[i + 1] = (Math.random() - 0.5) * 35;
+      particlePos[i + 2] = (Math.random() - 0.5) * 20;
+    }
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
+    const particleMat = new THREE.PointsMaterial({
+      color: 0x00c8e0,
+      size: 0.12,
+      transparent: true,
+      opacity: 0.25,
+      blending: THREE.AdditiveBlending
+    });
+    particles = new THREE.Points(particleGeo, particleMat);
+    scene.add(particles);
   }
-  particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
-  const particleMat = new THREE.PointsMaterial({
-    color: 0x00c8e0,
-    size: 0.12,
-    transparent: true,
-    opacity: 0.25,
-    blending: THREE.AdditiveBlending
-  });
-  const particles = new THREE.Points(particleGeo, particleMat);
-  scene.add(particles);
 
   // Ambient Lighting (balanced and softer)
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
@@ -254,8 +265,10 @@ function init3DHeroCanvas() {
     const pulse = 1 + Math.sin(elapsedTime * 1.2) * 0.03;
     mainGroup.scale.set(pulse, pulse, pulse);
 
-    // Slow particle rotation
-    particles.rotation.y = elapsedTime * 0.05;
+    // Slow particle rotation if active
+    if (particles) {
+      particles.rotation.y = elapsedTime * 0.05;
+    }
 
     renderer.render(scene, camera);
   }
@@ -281,20 +294,38 @@ function initHeaderScroll() {
 function initMobileMenu() {
   const burger = document.querySelector('.burger-btn');
   const drawer = document.querySelector('.mobile-drawer');
+  const closeBtn = document.querySelector('.drawer-close-btn');
   if (!burger || !drawer) return;
 
+  const toggleDrawer = (open) => {
+    drawer.classList.toggle('active', open);
+    drawer.setAttribute('aria-hidden', !open);
+    burger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+
   burger.addEventListener('click', () => {
-    const isOpen = drawer.classList.toggle('active');
-    burger.setAttribute('aria-expanded', isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
+    const isNowOpen = !drawer.classList.contains('active');
+    toggleDrawer(isNowOpen);
   });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      toggleDrawer(false);
+    });
+  }
 
   const links = drawer.querySelectorAll('a');
   links.forEach(l => {
     l.addEventListener('click', () => {
-      drawer.classList.remove('active');
-      document.body.style.overflow = '';
+      toggleDrawer(false);
     });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('active')) {
+      toggleDrawer(false);
+    }
   });
 }
 
