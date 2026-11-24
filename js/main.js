@@ -137,13 +137,13 @@ function init3DHeroCanvas() {
   const updatePosition = () => {
     if (window.innerWidth <= 600) {
       mainGroup.position.set(0, 0.2, -4);
-      mainGroup.scale.set(0.58, 0.58, 0.58);
+      mainGroup.scale.set(0.48, 0.48, 0.48);
     } else if (window.innerWidth <= 768) {
       mainGroup.position.set(0, 0.3, -3);
-      mainGroup.scale.set(0.7, 0.7, 0.7);
+      mainGroup.scale.set(0.65, 0.65, 0.65);
     } else if (window.innerWidth <= 1200) {
       mainGroup.position.set(0, 0.5, 0);
-      mainGroup.scale.set(0.9, 0.9, 0.9);
+      mainGroup.scale.set(0.88, 0.88, 0.88);
     } else {
       mainGroup.position.set(0, 0.5, 0);
       mainGroup.scale.set(1.0, 1.0, 1.0);
@@ -158,28 +158,32 @@ function init3DHeroCanvas() {
   const knotRadial = isTouchDevice() ? 24 : 48;
   const knotGeo = new THREE.TorusKnotGeometry(6.2, 1.8, knotSegments, knotRadial, 2, 5);
 
-  // Deep, dark forest/olive green base body with bright lime specular luster & clearcoat
+  // Bright vibrant lime green body matching the "ONLINE." headline text gradient (#D4F354 -> #E6FF7A)
+  // Transparent opacity (0.65) ensures white text stays clearly readable when overlapping
   const knotMat = new THREE.MeshPhysicalMaterial({
-    color: 0x14330b,
-    emissive: 0x091c05,
-    roughness: 0.32,
-    metalness: 0.75,
-    clearcoat: 0.75,
-    clearcoatRoughness: 0.2,
-    reflectivity: 0.7,
+    color: 0xd4f354,
+    emissive: 0x8ea822,
+    emissiveIntensity: 0.25,
+    roughness: 0.28,
+    metalness: 0.25,
+    clearcoat: 0.95,
+    clearcoatRoughness: 0.15,
+    reflectivity: 0.85,
+    transparent: true,
+    opacity: 0.68,
     wireframe: false
   });
 
   const mesh = new THREE.Mesh(knotGeo, knotMat);
   mainGroup.add(mesh);
 
-  // Delicate wireframe outer aura in lime green (clean 18% opacity)
+  // Subtle darker-green wireframe outer mesh lines at low opacity (14%) for structure without clutter
   const wireGeo = new THREE.TorusKnotGeometry(6.28, 1.84, isTouchDevice() ? 50 : 90, 24, 2, 5);
   const wireMat = new THREE.MeshBasicMaterial({
-    color: 0xd4f354,
+    color: 0x4a7012,
     wireframe: true,
     transparent: true,
-    opacity: 0.18
+    opacity: 0.14
   });
   const wireMesh = new THREE.Mesh(wireGeo, wireMat);
   mainGroup.add(wireMesh);
@@ -200,31 +204,31 @@ function init3DHeroCanvas() {
       color: 0xd4f354,
       size: 0.12,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.28,
       blending: THREE.AdditiveBlending
     });
     particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
   }
 
-  // Ambient & Rim Lighting (lime green & dark green tones, zero blue)
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+  // Balanced ambient light to illuminate the lime sculpture cleanly
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
   scene.add(ambientLight);
 
-  // Key light: bright lime specular glints and highlights
-  const keyLimeLight = new THREE.PointLight(0xd4f354, 2.4, 45);
-  keyLimeLight.position.set(12, 10, 8);
-  scene.add(keyLimeLight);
+  // Key light: near-white lime specular highlights and glints (#F4FFC2)
+  const keySpecularLight = new THREE.PointLight(0xf4ffc2, 2.5, 48);
+  keySpecularLight.position.set(12, 10, 8);
+  scene.add(keySpecularLight);
 
-  // Rim light: emerald / dark lime fill from opposite side
-  const rimLight = new THREE.PointLight(0x448811, 2.2, 50);
-  rimLight.position.set(-14, -8, 12);
-  scene.add(rimLight);
+  // Shading fill: slightly deeper lime tone (#A8CC2A) from the opposite side for rich 3D contouring
+  const shadeFillLight = new THREE.PointLight(0xa8cc2a, 2.0, 50);
+  shadeFillLight.position.set(-14, -8, 12);
+  scene.add(shadeFillLight);
 
-  // Top accent light: soft light lime glow
-  const topGlowLight = new THREE.PointLight(0xbfe03c, 1.2, 30);
-  topGlowLight.position.set(0, 15, -5);
-  scene.add(topGlowLight);
+  // Top rim light: light lime (#E6FF7A) for top crest illumination
+  const topRimLight = new THREE.PointLight(0xe6ff7a, 1.4, 35);
+  topRimLight.position.set(0, 16, -4);
+  scene.add(topRimLight);
 
   // Mouse Interaction parallax
   let targetRotX = 0;
