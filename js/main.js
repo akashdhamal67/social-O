@@ -158,13 +158,13 @@ function init3DHeroCanvas() {
   const knotRadial = isTouchDevice() ? 24 : 48;
   const knotGeo = new THREE.TorusKnotGeometry(6.2, 1.8, knotSegments, knotRadial, 2, 5);
 
-  // Softened, elegant deep cobalt/navy tone with subtle rim luster (reduced brightness & saturation)
+  // Deep, dark forest/olive green base body with bright lime specular luster & clearcoat
   const knotMat = new THREE.MeshPhysicalMaterial({
-    color: 0x1442a8,
-    emissive: 0x050f26,
+    color: 0x14330b,
+    emissive: 0x091c05,
     roughness: 0.32,
     metalness: 0.75,
-    clearcoat: 0.7,
+    clearcoat: 0.75,
     clearcoatRoughness: 0.2,
     reflectivity: 0.7,
     wireframe: false
@@ -173,18 +173,18 @@ function init3DHeroCanvas() {
   const mesh = new THREE.Mesh(knotGeo, knotMat);
   mainGroup.add(mesh);
 
-  // Delicate wireframe outer aura (subtler opacity)
+  // Delicate wireframe outer aura in lime green (clean 18% opacity)
   const wireGeo = new THREE.TorusKnotGeometry(6.28, 1.84, isTouchDevice() ? 50 : 90, 24, 2, 5);
   const wireMat = new THREE.MeshBasicMaterial({
     color: 0xd4f354,
     wireframe: true,
     transparent: true,
-    opacity: 0.10
+    opacity: 0.18
   });
   const wireMesh = new THREE.Mesh(wireGeo, wireMat);
   mainGroup.add(wireMesh);
 
-  // Subtler Floating Ambient Particles - hidden on touch devices
+  // Subtler Floating Ambient Particles in soft lime green - hidden on touch devices
   let particles = null;
   if (!isTouchDevice()) {
     const particleCount = 35;
@@ -197,31 +197,34 @@ function init3DHeroCanvas() {
     }
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
     const particleMat = new THREE.PointsMaterial({
-      color: 0x00c8e0,
+      color: 0xd4f354,
       size: 0.12,
       transparent: true,
-      opacity: 0.25,
+      opacity: 0.35,
       blending: THREE.AdditiveBlending
     });
     particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
   }
 
-  // Ambient Lighting (balanced and softer)
+  // Ambient & Rim Lighting (lime green & dark green tones, zero blue)
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
   scene.add(ambientLight);
 
-  const limeLight = new THREE.PointLight(0xd4f354, 2.2, 45);
-  limeLight.position.set(12, 10, 8);
-  scene.add(limeLight);
+  // Key light: bright lime specular glints and highlights
+  const keyLimeLight = new THREE.PointLight(0xd4f354, 2.4, 45);
+  keyLimeLight.position.set(12, 10, 8);
+  scene.add(keyLimeLight);
 
-  const blueLight = new THREE.PointLight(0x0055dd, 2.8, 50);
-  blueLight.position.set(-14, -8, 12);
-  scene.add(blueLight);
+  // Rim light: emerald / dark lime fill from opposite side
+  const rimLight = new THREE.PointLight(0x448811, 2.2, 50);
+  rimLight.position.set(-14, -8, 12);
+  scene.add(rimLight);
 
-  const cyanLight = new THREE.PointLight(0x00d4ee, 1.2, 30);
-  cyanLight.position.set(0, 15, -5);
-  scene.add(cyanLight);
+  // Top accent light: soft light lime glow
+  const topGlowLight = new THREE.PointLight(0xbfe03c, 1.2, 30);
+  topGlowLight.position.set(0, 15, -5);
+  scene.add(topGlowLight);
 
   // Mouse Interaction parallax
   let targetRotX = 0;
